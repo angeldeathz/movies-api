@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Movies.Proxy.Responses;
+using Movies.Services.Responses;
 using Movies.Services.Services.Movies;
 
 namespace Movies.API.Controllers.V2
@@ -18,7 +18,7 @@ namespace Movies.API.Controllers.V2
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<SearchMovieProxyResponse>> Get([FromQuery] string query,
+        public async Task<ActionResult<SearchMovieResponse>> Get([FromQuery] string query,
             [FromQuery] string language)
         {
             var response = await _movieService.SearchMovie(query, language);
