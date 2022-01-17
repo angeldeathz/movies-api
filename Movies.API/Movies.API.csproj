@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Movies.ApiConfigurations\Movies.ApiConfigurations.csproj" />
     <ProjectReference Include="..\Movies.Proxy\Movies.Proxy.csproj" />
     <ProjectReference Include="..\Movies.Services\Movies.Services.csproj" />
   </ItemGroup>

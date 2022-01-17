@@ -14,7 +14,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
-using Movies.API.Configuration;
+using Movies.ApiConfigurations.Swagger;
 using Movies.Proxy;
 using Movies.Proxy.Http;
 using Movies.Proxy.Proxies.Movies;
@@ -37,15 +37,12 @@ namespace Movies.API
         {
             services.AddControllers();
             services.AddHttpClient();
+
             services.AddTransient<IHttpService, HttpService>();
             services.AddTransient<IMovieProxy, MovieProxy>();
             services.AddTransient<IMovieService, MovieService>();
 
-            // swagger config
-            services.AddApiVersioning();
-            services.AddVersionedApiExplorer(opt => opt.GroupNameFormat = "'V'V");
-            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            services.AddSwaggerGen();
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,16 +51,7 @@ namespace Movies.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger(opt => opt.RouteTemplate = "api/{documentName}/swagger.json");
-
-                app.UseSwaggerUI(opt =>
-                {
-                    foreach (var description in provider.ApiVersionDescriptions)
-                    {
-                        opt.SwaggerEndpoint($"/api/{description.GroupName}/swagger.json",
-                            description.GroupName.ToUpperInvariant());
-                    }
-                });
+                app.ConfigureSwagger(provider);
             }
 
             app.UseHttpsRedirection();
